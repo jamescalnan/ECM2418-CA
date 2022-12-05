@@ -1,11 +1,9 @@
 %{-Begin Question 3.1-}
-indices( IS, XS, ES ) :-
-    indicesin(IS, XS, ES).
+indices([], _, []). % if the list of indices is empty, return an empty list
+indices([I|Is], L, [E|Es]) :- % otherwise, find the element at index I in L
+  nth0(I, L, E), % use the built-in nth0 predicate to find the element at index I in L
+  indices(Is, L, Es). % find the remaining elements recursively
 
-indicesin([], _, []).
-indicesin([I|Is], List, [R|Rs]) :-
-    nth0(I, List, R),
-    indicesin(Is, List, Rs).
 
 %{-End Question 3.1-}
 
@@ -24,6 +22,7 @@ perm([X|Y],Z) :-
     perm(Y,W),
     takeout(X,Z,W).
 
+
 %{-End Question 3.2-}
 
 %{-Begin Question 3.3-}
@@ -40,7 +39,7 @@ combine(Indi,GRid,  R) :-
     sum(ES, R).
 
 acceptable( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID) :- 
-	combine(US, GRID, UR),
+    combine(US, GRID, UR),
     combine(VS, GRID, VR),
     combine(WS, GRID, WR),
     UR is U,
@@ -58,7 +57,7 @@ acceptable( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID) :-
     
 suko( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID) :-
     possible(GRID),
-	acceptable( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID).
+    acceptable( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID).
 
 %{-End Question 3.3-}
 

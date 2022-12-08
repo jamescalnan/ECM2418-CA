@@ -4,7 +4,7 @@ import Data.List
 {-Begin Question 2.1-}
 number :: [Int] -> Int
 number =
-  foldl number 0
+  foldl' number 0
   where
     number num d = 10 * num + d
 
@@ -13,30 +13,33 @@ number =
 {-Begin Question 2.2-}
 splits :: [a] -> [([a], [a])]
 splits xs =
-  [x `splitAt` xs | x <- [1 .. length xs - 1]]
+  map (\x -> splitAt x xs) (take (length xs - 1) [1..])
 
 possibles :: [([Int], [Int])]
-possibles = concatMap splits (permutations [1 .. 9])
+possibles = concat (map (\xs -> splits xs) (permutations [1..9]))
 
 {-End Question 2.2-}
 
 {-Begin Question 2.3-}
 isAcceptable :: ([Int], [Int]) -> Bool
 isAcceptable (xs, ys) =
-  p == r && head (digits p) == 4 && last (digits low) == 3
+  and [p == r, head digitsP == 4, last digitsLow == 3]
   where
     x = number xs
     y = number ys
     low = min x y
     p = x * y
-    r = number (reverseList (digits p))
+    digitsP = digits p
+    digitsLow = digits low
+    r = number (reverse digitsP)
 
 digits :: Int -> [Int]
-digits 0 = []
-digits x = digits (x `div` 10) ++ [x `mod` 10]
-
-reverseList :: [Int] -> [Int]
-reverseList = foldl (flip (:)) []
+digits x = reverse (digits' x)
+  where
+    digits' 0 = []
+    digits' x = d : digits' x'
+      where
+        (x', d) = x `divMod` 10
 
 acceptables :: [([Int], [Int])]
 acceptables = filter isAcceptable possibles

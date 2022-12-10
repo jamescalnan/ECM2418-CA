@@ -34,33 +34,29 @@ isAcceptable (xs, ys) =
     r = number (reverse digitsP)
 
 digits :: Int -> [Int]
-digits x = reverse (digits' x)
-  where
-    digits' 0 = []
-    digits' x = d : digits' x'
-      where
-        (x', d) = x `divMod` 10
+digits 0 = []
+digits x = digits (x `div` 10) ++ [x `mod` 10]
 
 acceptables :: [([Int], [Int])]
 acceptables = filter isAcceptable possibles
 
 {-End Question 2.3-}
 
-main = do
-  -- Question 2.1
-  let x = number [9, 1, 2, 4]
-  print x
-
-  -- Question 2.2
-  let x = splits [1, 2, 3, 4]
-  print x
-
-  let x = length possibles
-  print x
-
-  -- Question 2.3
-  let x = isAcceptable ([7, 1, 6, 3], [5, 9, 2, 4, 8])
-  print x
-
-  let x = length acceptables
-  print x
+-- main = do
+--   -- Question 2.1
+--     let x = number [9, 1, 2, 4]
+--     print x
+    
+--     -- -- Question 2.2
+--     let x = splits [1, 2, 3, 4]
+--     print x
+    
+--     let x = length possibles
+--     print x
+    
+--     -- Question 2.3
+--     let x = isAcceptable ([7, 1, 6, 3], [5, 9, 2, 4, 8])
+--     print x
+    
+--     let x = length acceptables
+--     print x

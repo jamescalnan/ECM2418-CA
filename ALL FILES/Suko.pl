@@ -1,8 +1,8 @@
 %{-Begin Question 3.1-}
-indices([], _, []). % if the list of indices is empty, return an empty list
-indices([I|Is], L, [E|Es]) :- % otherwise, find the element at index I in L
-  nth0(I, L, E), % use the built-in nth0 predicate to find the element at index I in L
-  indices(Is, L, Es). % find the remaining elements recursively
+indices([], _, []).
+indices([I|Is], L, [E|Es]) :- 
+  nth0(I, L, E),
+  indices(Is, L, Es).
 
 
 %{-End Question 3.1-}
@@ -11,32 +11,37 @@ indices([I|Is], L, [E|Es]) :- % otherwise, find the element at index I in L
 possible( GRID )
   :- perm([1,2,3,4,5,6,7,8,9], GRID).
 
-takeout(X,[X|R],R).
+leave(X,[X|R],R).
     
-takeout(X,[F|R],[F|S]) :-
-    takeout(X,R,S).
+leave(X,[F|R],[F|S]) :-
+    leave(X,R,S).
 
 perm([],[]).
 
 perm([X|Y],Z) :-
     perm(Y,W),
-    takeout(X,Z,W).
+    leave(X,Z,W).
 
 
 %{-End Question 3.2-}
 
 %{-Begin Question 3.3-}
-% first check that the numbers in the colour zones
-% add up to the correct amount
+sum(List, Sum) :-
+    sum_acc(List, Sum, 0).
 
-sum([], 0).
-sum([H|T], Sum) :-
-   sum(T, Rest),
-   Sum is H + Rest.
+sum_acc([], Sum, Sum).
+sum_acc([H|T], Sum, Acc) :-
+    NewAcc is Acc + H,
+    sum_acc(T, Sum, NewAcc).
 
-combine(Indi,GRid,  R) :-
-    indices( Indi, GRid, ES),
-    sum(ES, R).
+combine(Indices, Grid, Sum) :-
+    combine_acc(Indices, Grid, Sum, 0).
+
+combine_acc([], _, Sum, Sum).
+combine_acc([I|Is], Grid, Sum, Acc) :-
+    nth0(I, Grid, E),
+    NewAcc is Acc + E,
+    combine_acc(Is, Grid, Sum, NewAcc).
 
 acceptable( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID) :- 
     combine(US, GRID, UR),
@@ -58,7 +63,6 @@ acceptable( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID) :-
 suko( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID) :-
     possible(GRID),
     acceptable( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID).
-
 %{-End Question 3.3-}
 
 %-- any main predicates for testing goes here

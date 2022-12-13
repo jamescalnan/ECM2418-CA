@@ -1,13 +1,13 @@
-%{-Begin Question 3.1-}
+/*Begin Question 3.1*/
 indices([], _, []).
 indices([I|Is], L, [E|Es]) :- 
   nth0(I, L, E),
   indices(Is, L, Es).
 
 
-%{-End Question 3.1-}
+/*End Question 3.1*/
 
-%{-Begin Question 3.2-}
+/*Begin Question 3.2*/
 possible( GRID )
   :- perm([1,2,3,4,5,6,7,8,9], GRID).
 
@@ -23,9 +23,9 @@ perm([X|Y],Z) :-
     leave(X,Z,W).
 
 
-%{-End Question 3.2-}
+/*End Question 3.2*/
 
-%{-Begin Question 3.3-}
+/*Begin Question 3.3*/
 sum(List, Sum) :-
     sum_acc(List, Sum, 0).
 
@@ -63,6 +63,6 @@ acceptable( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID) :-
 suko( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID) :-
     possible(GRID),
     acceptable( T0, T1, T2, T3, US, U, VS, V, WS, W, GRID).
-%{-End Question 3.3-}
+/*End Question 3.3*/
 
-%-- any main predicates for testing goes here
+-- any main predicates for testing goes here
